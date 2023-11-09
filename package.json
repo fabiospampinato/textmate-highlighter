@@ -1,0 +1,44 @@
+{
+  "name": "highmate",
+  "repository": "github:fabiospampinato/highmate",
+  "description": "An isomoprhic syntax highlighter using TextMate grammars and VSCode themes.",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "benchmark": "tsex benchmark",
+    "benchmark:watch": "tsex benchmark --watch",
+    "clean": "tsex clean",
+    "compile": "tsex compile",
+    "compile:watch": "tsex compile --watch",
+    "demo": "vite demo",
+    "shiki:dump": "tsex task --name shiki_dump",
+    "prepublishOnly": "tsex prepare"
+  },
+  "keywords": [
+    "syntax",
+    "highlighting",
+    "textmate",
+    "grammar",
+    "vscode",
+    "theme"
+  ],
+  "dependencies": {
+    "are-shallow-equal": "^2.0.1",
+    "event-loop-yielder": "^3.0.1",
+    "kasi": "^1.0.1",
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.0.0"
+  },
+  "devDependencies": {
+    "benchloop": "^2.1.1",
+    "paketo": "^1.0.1",
+    "shiki": "^0.14.5",
+    "tiny-readdir": "^2.2.0",
+    "tsex": "^3.0.1",
+    "typescript": "^5.2.2",
+    "vite": "^4.5.0"
+  }
+}
