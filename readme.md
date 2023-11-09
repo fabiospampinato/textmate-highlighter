@@ -10,7 +10,7 @@ This is very similar in approach to [`Shiki`](https://github.com/octref/shiki), 
 - It's unopinionated about how Oniguruma, grammars and themes are loaded or from where.
 - It supports various built-in rendering targets: HTML, DOM and CSS Custom Highlights.
 - It supports a low-level tokenization mode, for custom render targets.
-- It tries not to block the main thread for a long time, yield back control every now and then.
+- It tries not to block the main thread for a long time, yielding back control every now and then.
 
 Maybe the main "unique" features are:
 
@@ -278,11 +278,13 @@ const node = await highmate.highlightToDOM ({
 
 // Rendering some code to a single <pre> element containing a single Text node (client-only)
 
-const node = await highmate.highlightToHighlights ({
+const [node, dispose] = await highmate.highlightToHighlights ({
   code: 'const foo = "bar";',
   grammar: 'source.js',
   theme: 'github-dark'
 });
+
+dispose (); // The dispose function cleans up all the CSS Custom Highlights, allowing the nodes to be garbage collected
 
 // Doing low-level tokenization
 
