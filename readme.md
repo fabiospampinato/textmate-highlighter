@@ -1,6 +1,6 @@
 # HighMate
 
-An isomoprhic syntax highlighter using TextMate grammars and VSCode themes.
+An isomorphic syntax highlighter using TextMate grammars and VSCode themes.
 
 This is very similar in approach to [`Shiki`](https://github.com/octref/shiki), which you should probably use instead if it works well for you.
 
