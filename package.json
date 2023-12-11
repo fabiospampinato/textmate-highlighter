@@ -1,7 +1,7 @@
 {
   "name": "highmate",
   "repository": "github:fabiospampinato/highmate",
-  "description": "An isomoprhic syntax highlighter using TextMate grammars and VSCode themes.",
+  "description": "An isomorphic syntax highlighter using TextMate grammars and VSCode themes.",
   "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",
