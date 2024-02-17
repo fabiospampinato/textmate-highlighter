@@ -120,7 +120,13 @@ class Registry<Grammar extends string, Theme extends string> {
 
   loadThemeStyles = once ((): string[] => {
 
-    return ['', 'italic', 'bold', '', ''];
+    return ['', 'italic', '', '', ''];
+
+  });
+
+  loadThemeWeights = once ((): string[] => {
+
+    return ['', '', 'bold', '', ''];
 
   });
 

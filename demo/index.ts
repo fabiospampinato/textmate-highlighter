@@ -1,7 +1,7 @@
 
 /* IMPORT */
 
-import HighMate from '../src';
+import Highlighter from '../src';
 
 /* TYPES */
 
@@ -224,7 +224,7 @@ const BACKGROUNDS = {
   'light': '#ffffff'
 };
 
-const HM = new HighMate<Grammar, Theme> ({
+const highlighter = new Highlighter<Grammar, Theme> ({
   getGrammar: grammar => {
     console.log ( 'Loading grammar:', grammar );
     return GRAMMARS[grammar];
@@ -381,10 +381,18 @@ const renderControls = (): void => {
 
 };
 
+const renderHighlightANSI = async (): Promise<void> => {
+
+  const output = await highlighter.highlightToANSI ({ code, grammar, theme });
+
+  console.log ( output );
+
+};
+
 const renderHighlightHTML = async (): Promise<void> => {
 
   const target = document.getElementById ( 'output-html' )!;
-  const output = await HM.highlightToHTML ({ code, grammar, theme });
+  const output = await highlighter.highlightToHTML ({ code, grammar, theme });
 
   target.innerHTML = '';
   target.innerHTML = output;
@@ -394,7 +402,7 @@ const renderHighlightHTML = async (): Promise<void> => {
 const renderHighlightDOM = async (): Promise<void> => {
 
   const target = document.getElementById ( 'output-dom' )!;
-  const output = await HM.highlightToDOM ({ code, grammar, theme });
+  const output = await highlighter.highlightToDOM ({ code, grammar, theme });
 
   target.innerHTML = '';
   target.appendChild ( output );
@@ -404,7 +412,7 @@ const renderHighlightDOM = async (): Promise<void> => {
 const renderHighlightHighlights = async (): Promise<void> => {
 
   const target = document.getElementById ( 'output-highlights' )!;
-  const [output, dispose] = await HM.highlightToHighlights ({ code, grammar, theme }); //TODO: Actually call the "dispose" function at some point though
+  const [output, dispose] = await highlighter.highlightToHighlights ({ code, grammar, theme }); //TODO: Actually call the "dispose" function at some point though
 
   target.innerHTML = '';
   target.appendChild ( output );
@@ -415,6 +423,7 @@ const renderHighlightHighlights = async (): Promise<void> => {
 
 const renderHighlights = async (): Promise<void> => {
 
+  await renderHighlightANSI ();
   await renderHighlightHTML ();
   await renderHighlightDOM ();
   await renderHighlightHighlights ();

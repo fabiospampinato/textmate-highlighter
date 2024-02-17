@@ -1,15 +1,15 @@
 
 /* IMPORT */
 
+import * as Highlighter from 'tokens-highlighter';
 import Oniguruma from './textmate/oniguruma';
 import Registry from './textmate/registry';
-import Renderer from './textmate/renderer';
 import Tokenizer from './textmate/tokenizer';
-import type {Disposer, PromiseMaybe, AbortSignal, OptionsHighlight, OptionsHighMate, TextMateToken} from './types';
+import type {Disposer, PromiseMaybe, AbortSignal, OptionsHighlight, OptionsHighlighter, TextMateToken} from './types';
 
 /* MAIN */
 
-class HighMate<Grammar extends string = string, Theme extends string = string> {
+class TextMateHighlighter<Grammar extends string = string, Theme extends string = string> {
 
   /* VARIABLES */
 
@@ -19,7 +19,7 @@ class HighMate<Grammar extends string = string, Theme extends string = string> {
 
   /* CONSTRUCTOR */
 
-  constructor ( options: OptionsHighMate<Grammar, Theme> ) {
+  constructor ( options: OptionsHighlighter<Grammar, Theme> ) {
 
     const {getGrammar, getOniguruma, getTheme} = options;
 
@@ -31,37 +31,43 @@ class HighMate<Grammar extends string = string, Theme extends string = string> {
 
   /* API */
 
-  highlightToAbstract = async <T> ( options: OptionsHighlight<Grammar, Theme>, highlighter: ( lines: string[], tokens: TextMateToken[][], background: string ) => PromiseMaybe<T> ): Promise<T> => {
+  highlightToAbstract = async <T> ( options: OptionsHighlight<Grammar, Theme>, highlighter: ( tokens: TextMateToken[][], options: { backgroundColor?: string } ) => PromiseMaybe<T> ): Promise<T> => {
 
     const lines = options.code.replace ( /^(\r?\n|\r)+|(\r?\n|\r)+$/g, '' ).split ( /\r?\n|\r/g );
-    const tokens: TextMateToken[][] = [];
+    const tokens: TextMateToken[][] = new Array ( lines.length ).fill ( [] );
 
     await this.tokenize ( lines, options.grammar, options.theme, options.signal, ( lineTokens, lineIndex ) => {
       tokens[lineIndex] = lineTokens;
     });
 
-    const background = options.background || ( await this.registry.loadThemeColorsDefault ( options.theme ) ).background;
-    const result = highlighter ( lines, tokens, background );
+    const backgroundColor = options.background || ( await this.registry.loadThemeColorsDefault ( options.theme ) ).background;
+    const result = highlighter ( tokens, { backgroundColor } );
 
     return result;
 
   };
 
+  highlightToANSI = ( options: OptionsHighlight<Grammar, Theme> ): Promise<string> => {
+
+    return this.highlightToAbstract ( options, Highlighter.toANSI );
+
+  };
+
   highlightToDOM = ( options: OptionsHighlight<Grammar, Theme> ): Promise<HTMLPreElement> => {
 
-    return this.highlightToAbstract ( options, Renderer.toDOM );
+    return this.highlightToAbstract ( options, Highlighter.toDOM );
 
   };
 
   highlightToHighlights = ( options: OptionsHighlight<Grammar, Theme> ): Promise<[HTMLPreElement, Disposer]> => {
 
-    return this.highlightToAbstract ( options, Renderer.toHighlights );
+    return this.highlightToAbstract ( options, Highlighter.toHighlights );
 
   };
 
   highlightToHTML = ( options: OptionsHighlight<Grammar, Theme> ): Promise<string> => {
 
-    return this.highlightToAbstract ( options, Renderer.toHTML );
+    return this.highlightToAbstract ( options, Highlighter.toHTML );
 
   };
 
@@ -75,4 +81,5 @@ class HighMate<Grammar extends string = string, Theme extends string = string> {
 
 /* EXPORT */
 
-export default HighMate;
+export default TextMateHighlighter;
+export type {OptionsHighlight, OptionsHighlighter, TextMateToken};

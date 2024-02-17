@@ -26,7 +26,7 @@ type OptionsHighlight<Grammar extends string = string, Theme extends string = st
   signal?: AbortSignal
 };
 
-type OptionsHighMate<Grammar extends string = string, Theme extends string = string> = {
+type OptionsHighlighter<Grammar extends string = string, Theme extends string = string> = {
   getGrammar: ( grammar: Grammar ) => PromiseMaybe<TextMateGrammarRaw | string>,
   getOniguruma: () => PromiseMaybe<ArrayBuffer | string>,
   getTheme: ( theme: Theme ) => PromiseMaybe<TextMateThemeRaw | string>
@@ -64,6 +64,8 @@ type TextMateThemeRaw = IRawTheme & {
 };
 
 type TextMateToken = {
+  /* CONTENT */
+  value: string,
   /* POSITION */
   startIndex: number,
   endIndex: number,
@@ -71,10 +73,11 @@ type TextMateToken = {
   color: string,
   backgroundColor: string,
   fontStyle: string,
+  fontWeight: string,
   textDecoration: string
 };
 
 /* EXPORT */
 
 export type {Disposer, FunctionMaybe, PromiseMaybe};
-export type {AbortSignal, OptionsHighlight, OptionsHighMate, OptionsOniguruma, OptionsRegistry, TextMateGrammar, TextMateGrammarRaw, TextMateOniguruma, TextMateRegistry, TextMateThemeRaw, TextMateToken};
+export type {AbortSignal, OptionsHighlight, OptionsHighlighter, OptionsOniguruma, OptionsRegistry, TextMateGrammar, TextMateGrammarRaw, TextMateOniguruma, TextMateRegistry, TextMateThemeRaw, TextMateToken};

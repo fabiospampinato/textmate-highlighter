@@ -1,4 +1,4 @@
-# HighMate
+# TextMate Highlighter
 
 An isomorphic syntax highlighter using TextMate grammars and VSCode themes.
 
@@ -6,28 +6,22 @@ This is very similar in approach to [`Shiki`](https://github.com/octref/shiki), 
 
 ## Features
 
-- It works both in browsers and in server-side environments (HTML renderer only).
+- It works both in browsers and in server-side environments (HTML and ANSI renderers only).
 - It's unopinionated about how Oniguruma, grammars and themes are loaded or from where.
-- It supports various built-in rendering targets: HTML, DOM and CSS Custom Highlights.
+- It supports various built-in rendering targets: HTML, DOM, ANSI and CSS Custom Highlights.
 - It supports a low-level tokenization mode, for custom render targets.
 - It tries not to block the main thread for a long time, yielding back control every now and then.
-
-Maybe the main "unique" features are:
-
-- The DOM renderer is more efficient than the HTML renderer on the client, because it allows you to skip both HTML escaping and HTML parsing.
-- The CSS Custom Highlights renderer is special in that in doesn't need any elements for syntax highlighting at all, it's able to highlight the raw Text node directly.
-- Potentially the low-level tokenization mode could be used to build an editor too, or for other use cases.
 
 ## Install
 
 ```sh
-npm install --save highmate
+npm install --save textmate-highlighter
 ```
 
 ## Usage
 
 ```ts
-import HighMate from 'highmate';
+import Highlighter from 'textmate-highlighter';
 
 // First of all let's define where to get grammars, themes and Onigiruma from
 // You can also pre-fetch some these objects on your own if you want, we'll use URLs here for simplicity
@@ -244,9 +238,9 @@ const THEMES = {
   'vitesse-light': 'https://unpkg.com/shiki@^0.14.5/themes/vitesse-light.json'
 };
 
-// Now let's instantiate HighMate
+// Now let's instantiate the highlighter
 
-const highmate = new HighMate ({
+const highlighter = new Highlighter ({
   getGrammar: grammar => {
     console.log ( 'Loading grammar:', grammar );
     return GRAMMARS[grammar];
@@ -262,7 +256,7 @@ const highmate = new HighMate ({
 
 // Rendering some code to HTML
 
-const html = await highmate.highlightToHTML ({
+const html = await highlighter.highlightToHTML ({
   code: 'const foo = "bar";',
   grammar: 'source.js',
   theme: 'github-dark'
@@ -270,7 +264,15 @@ const html = await highmate.highlightToHTML ({
 
 // Rendering some code to DOM nodes directly (client-only)
 
-const node = await highmate.highlightToDOM ({
+const node = await highlighter.highlightToDOM ({
+  code: 'const foo = "bar";',
+  grammar: 'source.js',
+  theme: 'github-dark'
+});
+
+// Rendering some code to ANSI, for the terminal
+
+const ansi = await highlighter.highlightToANSI ({
   code: 'const foo = "bar";',
   grammar: 'source.js',
   theme: 'github-dark'
@@ -278,7 +280,7 @@ const node = await highmate.highlightToDOM ({
 
 // Rendering some code to a single <pre> element containing a single Text node (client-only)
 
-const [node, dispose] = await highmate.highlightToHighlights ({
+const [node, dispose] = await highlighter.highlightToHighlights ({
   code: 'const foo = "bar";',
   grammar: 'source.js',
   theme: 'github-dark'
@@ -297,7 +299,7 @@ const lines = [
 const abortController = new AbortController ();
 const abortSignal = abortController.signal;
 
-highmate.tokenize ( lines, 'source.js', 'github-dark', abortSignal, ( lineTokens, lineIndex ) => {
+highlighter.tokenize ( lines, 'source.js', 'github-dark', abortSignal, ( lineTokens, lineIndex ) => {
   console.log ( 'Line tokens:', lineTokens );
   console.log ( 'Line index:', lineIndex );
 });

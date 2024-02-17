@@ -3,7 +3,7 @@
 
 import benchmark from 'benchloop';
 import Shiki from 'shiki';
-import HighMate from '../dist/index.js';
+import Highlighter from '../dist/index.js';
 
 /* HELPERS */
 
@@ -33,7 +33,7 @@ const THEMES = {
   'github-dark': 'https://unpkg.com/shiki@^0.14.5/themes/github-dark.json'
 };
 
-const highmate = new HighMate ({
+const highlighter = new Highlighter ({
   getGrammar: grammar => GRAMMARS[grammar],
   getTheme: theme => THEMES[theme],
   getOniguruma: () => ONIGURUMA
@@ -43,9 +43,9 @@ const shiki = await Shiki.getHighlighter ({
   theme: 'github-dark'
 });
 
-const highmateToHTML = () => {
+const highlighterToHTML = () => {
 
-  return highmate.highlightToHTML ({
+  return highlighter.highlightToHTML ({
     code: CODE,
     grammar: 'source.js',
     theme: 'github-dark'
@@ -59,7 +59,7 @@ const shikiToHTML = () => {
 
 };
 
-await highmateToHTML (); // Ensuring resources are already loaded
+await highlighterToHTML (); // Ensuring resources are already loaded
 await shikiToHTML (); // Ensuring resources are already loaded
 
 /* MAIN */
@@ -69,9 +69,9 @@ benchmark.config ({
 });
 
 benchmark ({
-  name: 'highmate.highlightToHTML',
+  name: 'highlighter.highlightToHTML',
   fn: () => {
-    return highmateToHTML ();
+    return highlighterToHTML ();
   }
 });
 

@@ -37,6 +37,7 @@ class Tokenizer<Grammar extends string, Theme extends string> {
     const colors = await this.registry.loadThemeColors ( theme );
     const decorations = this.registry.loadThemeDecorations ();
     const styles = this.registry.loadThemeStyles ();
+    const weights = this.registry.loadThemeWeights ();
 
     if ( !tokenizer ) return;
     if ( !themer ) return;
@@ -65,6 +66,7 @@ class Tokenizer<Grammar extends string, Theme extends string> {
 
         const startIndex = tokens[ti];
         const endIndex = tokens[ti + 2] || lineLength;
+        const value = line.substring ( startIndex, endIndex );
 
         const bits = tokens[ti + 1];
         const colorBits = ( bits & 0b00000000011111111100000000000000 ) >>> 15;
@@ -74,9 +76,10 @@ class Tokenizer<Grammar extends string, Theme extends string> {
         const color = colors[colorBits] || '';
         const backgroundColor = colors[backgroundColorBits] || '';
         const fontStyle = styles[fontBits] || '';
+        const fontWeight = weights[fontBits] || '';
         const textDecoration = decorations[fontBits] || '';
 
-        const token: TextMateToken = { startIndex, endIndex, color, backgroundColor, fontStyle, textDecoration };
+        const token: TextMateToken = { value, startIndex, endIndex, color, backgroundColor, fontStyle, fontWeight, textDecoration };
 
         lineTokens[tj] = token;
 

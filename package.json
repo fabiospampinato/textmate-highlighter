@@ -1,6 +1,6 @@
 {
-  "name": "highmate",
-  "repository": "github:fabiospampinato/highmate",
+  "name": "textmate-highlighter",
+  "repository": "github:fabiospampinato/textmate-highlighter",
   "description": "An isomorphic syntax highlighter using TextMate grammars and VSCode themes.",
   "version": "0.1.0",
   "type": "module",
@@ -28,7 +28,7 @@
   "dependencies": {
     "are-shallow-equal": "^2.0.1",
     "event-loop-yielder": "^3.0.1",
-    "kasi": "^1.0.1",
+    "tokens-highlighter": "^1.0.0",
     "vscode-oniguruma": "^2.0.1",
     "vscode-textmate": "^9.0.0"
   },

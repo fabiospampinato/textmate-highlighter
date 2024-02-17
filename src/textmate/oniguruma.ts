@@ -8,7 +8,7 @@ import type {OptionsOniguruma, TextMateOniguruma} from '../types';
 
 /* MAIN */
 
-//TODO: Explore ditching Oniguruma entirely and instead converting Ruby regexes to native JS regexes
+//TODO: Explore ditching Oniguruma entirely and instead converting its regexes to native JS regexes
 
 class Oniguruma {
 
