@@ -71,7 +71,7 @@ class TextMateHighlighter<Grammar extends string = string, Theme extends string 
 
   };
 
-  tokenize = ( lines: string[], grammar: Grammar, theme: Theme, signal: AbortSignal | undefined, onTokens: ( tokens: TextMateToken[], lineIndex: number ) => void ): Promise<void> => {
+  tokenize = ( lines: string[], grammar: Grammar, theme: Theme, signal?: AbortSignal, onTokens?: ( tokens: TextMateToken[], lineIndex: number ) => void ): Promise<TextMateToken[][]> => {
 
     return this.tokenizer.tokenize ( lines, grammar, theme, signal, onTokens );
 

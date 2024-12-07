@@ -299,7 +299,7 @@ const lines = [
 const abortController = new AbortController ();
 const abortSignal = abortController.signal;
 
-highlighter.tokenize ( lines, 'source.js', 'github-dark', abortSignal, ( lineTokens, lineIndex ) => {
+const linesTokens = await highlighter.tokenize ( lines, 'source.js', 'github-dark', abortSignal, ( lineTokens, lineIndex ) => {
   console.log ( 'Line tokens:', lineTokens );
   console.log ( 'Line index:', lineIndex );
 });

@@ -30,7 +30,9 @@ class Tokenizer<Grammar extends string, Theme extends string> {
 
   /* API */
 
-  tokenize = async ( lines: string[], grammar: Grammar, theme: Theme, signal: AbortSignal | undefined, onTokens: ( tokens: TextMateToken[], lineIndex: number ) => void ): Promise<void> => { //TODO: Optimize this //TODO: Maybe add a sync version too
+  tokenize = async ( lines: string[], grammar: Grammar, theme: Theme, signal?: AbortSignal, onTokens?: ( tokens: TextMateToken[], lineIndex: number ) => void ): Promise<TextMateToken[][]> => { //TODO: Optimize this //TODO: Maybe add a sync version too
+
+    const linesTokens: TextMateToken[][] = new Array ();
 
     const tokenizer = await this.registry.loadGrammar ( grammar );
     const themer = await this.registry.loadTheme ( theme );
@@ -39,8 +41,8 @@ class Tokenizer<Grammar extends string, Theme extends string> {
     const styles = this.registry.loadThemeStyles ();
     const weights = this.registry.loadThemeWeights ();
 
-    if ( !tokenizer ) return;
-    if ( !themer ) return;
+    if ( !tokenizer ) return linesTokens;
+    if ( !themer ) return linesTokens;
 
     let state = INITIAL;
 
@@ -48,7 +50,7 @@ class Tokenizer<Grammar extends string, Theme extends string> {
 
       if ( i % 10 === 0 ) await yieldToEventLoop ();
 
-      if ( signal?.aborted ) return;
+      if ( signal?.aborted ) return linesTokens;
 
       this.registry.setTheme ( themer ); // To be sure we are always tokenizing the right theme
 
@@ -62,7 +64,7 @@ class Tokenizer<Grammar extends string, Theme extends string> {
 
         if ( ti % 100 === 0 ) await yieldToEventLoop ();
 
-        if ( signal?.aborted ) return;
+        if ( signal?.aborted ) return linesTokens;
 
         const startIndex = tokens[ti];
         const endIndex = tokens[ti + 2] || lineLength;
@@ -87,9 +89,13 @@ class Tokenizer<Grammar extends string, Theme extends string> {
 
       state = lineResult.ruleStack;
 
-      onTokens ( lineTokens, i );
+      onTokens?.( lineTokens, i );
+
+      linesTokens.push ( lineTokens );
 
     }
+
+    return linesTokens;
 
   };
 
