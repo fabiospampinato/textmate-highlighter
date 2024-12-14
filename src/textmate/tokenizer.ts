@@ -30,7 +30,7 @@ class Tokenizer<Grammar extends string, Theme extends string> {
 
   /* API */
 
-  tokenize = async ( lines: string[], grammar: Grammar, theme: Theme, signal?: AbortSignal, onTokens?: ( tokens: TextMateToken[], lineIndex: number ) => void ): Promise<TextMateToken[][]> => { //TODO: Optimize this //TODO: Maybe add a sync version too
+  tokenize = async ( lines: string[], grammar: Grammar, theme: Theme, signal?: AbortSignal, onTokens?: ( tokens: TextMateToken[], lineIndex: number ) => TextMateToken[] | void ): Promise<TextMateToken[][]> => { //TODO: Optimize this //TODO: Maybe add a sync version too
 
     const linesTokens: TextMateToken[][] = new Array ( lines.length ).fill ( [] );
 
@@ -89,9 +89,9 @@ class Tokenizer<Grammar extends string, Theme extends string> {
 
       state = lineResult.ruleStack;
 
-      onTokens?.( lineTokens, i );
+      const lineTokensTransformed = onTokens?.( lineTokens, i ) || lineTokens;
 
-      linesTokens[i] = lineTokens;
+      linesTokens[i] = lineTokensTransformed;
 
     }
 
