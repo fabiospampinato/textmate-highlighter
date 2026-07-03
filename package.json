@@ -2,6 +2,7 @@
   "name": "textmate-highlighter",
   "repository": "github:fabiospampinato/textmate-highlighter",
   "description": "An isomorphic syntax highlighter using TextMate grammars and VSCode themes.",
+  "license": "MIT",
   "version": "1.2.0",
   "type": "module",
   "main": "dist/index.js",
