@@ -15,7 +15,7 @@ This is very similar in approach to [`Shiki`](https://github.com/octref/shiki), 
 ## Install
 
 ```sh
-npm install --save textmate-highlighter
+npm install textmate-highlighter
 ```
 
 ## Usage
