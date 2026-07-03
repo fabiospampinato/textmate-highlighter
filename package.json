@@ -27,19 +27,21 @@
     "theme"
   ],
   "dependencies": {
-    "are-shallow-equal": "^2.0.1",
-    "event-loop-yielder": "^3.0.1",
-    "tokens-highlighter": "^1.0.0",
+    "are-shallow-equal": "^2.0.2",
+    "event-loop-yielder": "^3.0.3",
+    "function-once": "^3.0.1",
+    "lomemo": "^1.0.1",
+    "tokens-highlighter": "^1.0.1",
     "vscode-oniguruma": "^2.0.1",
-    "vscode-textmate": "^9.0.0"
+    "vscode-textmate": "^9.3.2"
   },
   "devDependencies": {
     "benchloop": "^2.1.1",
-    "paketo": "^1.0.1",
-    "shiki": "^0.14.5",
-    "tiny-readdir": "^2.2.0",
-    "tsex": "^3.0.1",
-    "typescript": "^5.2.2",
-    "vite": "^4.5.0"
+    "paketo": "^1.0.2",
+    "shiki": "^0.14.7",
+    "tiny-readdir": "^3.1.1",
+    "tsex": "^4.0.2",
+    "typescript": "^5.9.3",
+    "vite": "^4.5.14"
   }
 }
